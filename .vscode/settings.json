@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "unistd.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "chrono": "c",
+        "thread": "c",
+        "random": "c",
+        "limits": "c",
+        "semaphore": "c"
     }
 }
