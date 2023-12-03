@@ -6,6 +6,13 @@
         "thread": "c",
         "random": "c",
         "limits": "c",
-        "semaphore": "c"
+        "semaphore": "c",
+        "ratio": "c",
+        "optional": "c",
+        "system_error": "c",
+        "array": "c",
+        "functional": "c",
+        "tuple": "c",
+        "utility": "c"
     }
 }
