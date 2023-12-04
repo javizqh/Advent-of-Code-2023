@@ -2,4 +2,4 @@
 .vscode/*
 
 # JSON
-*.json
+settings.json
