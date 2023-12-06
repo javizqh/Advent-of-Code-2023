@@ -47,6 +47,7 @@ int main(int argc, char const *argv[]) {
     }
     
     free(buff);
+    free(seed_list);
     fclose(fp);
     printf("Result: %lld\n", result);
     return 0;
