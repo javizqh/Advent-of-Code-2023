@@ -3,13 +3,14 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define MAX_BUFFER_SIZE 1024
 #define MAX_SEEDS 256
 #define INPUT_FILE "input.txt"
 #define TEST_FILE "test.txt"
 
-typedef struct {
+typedef struct seeds{
     long long list[MAX_SEEDS];
     long long range[MAX_SEEDS];
     int has_changed[MAX_SEEDS];
@@ -23,6 +24,7 @@ seeds * check_seeds_2(char *line);
 int check_line(char *line, seeds * list);
 
 int main(int argc, char const *argv[]) {
+    struct timespec start, end;
     FILE * fp;
     size_t len = 0;
     char * buff = NULL;
@@ -31,6 +33,7 @@ int main(int argc, char const *argv[]) {
     fp = fopen(INPUT_FILE, "r");
     if (fp == NULL) err(EXIT_FAILURE, "open failed");
 
+    clock_gettime(CLOCK_REALTIME, &start);
     // Get firt line to save seeds
     getline(&buff, &len, fp);
     // seeds * seed_list = check_seeds(buff); // Part 1
@@ -45,11 +48,13 @@ int main(int argc, char const *argv[]) {
             result = seed_list->list[i];
         }
     }
+    clock_gettime(CLOCK_REALTIME, &end);
     
     free(buff);
     free(seed_list);
     fclose(fp);
     printf("Result: %lld\n", result);
+    printf("Time spent: %ld microseconds\n",(end.tv_nsec - start.tv_nsec) / 1000);
     return 0;
 }
 
@@ -99,29 +104,25 @@ int check_line(char *line, seeds * list) {
         }
     }
 
-    long long new_value = -1;
     long long cut_place = 0; 
 
-    for (size_t i = 0; i < list->size; i++) {
+    for (int i = 0; i < list->size; i++) {
         if (!list->has_changed[i] && list->list[i] >= source && 
             list->list[i] <= source + length) 
         {
             // Begining inside
             // Change list value and check if some part of it is inside to separate them
-            // 57 + 13 range = 53 + 8 range, cut in range - 9
-            // Cut in 61
-            new_value = list->list[i] - source + destination;
+            // 57 + 43 range = 70 + 2 range, cut in range -28, [57 a 72, 73 a 100]
             cut_place = (source + length) - (list->range[i] + list->list[i]);
             if (cut_place < 0) {
                 // We have to separate them
                 list->list[list->size] = list->list[i] + list->range[i] + cut_place;
-                list->range[list->size] = -cut_place - 1;
-                // list->has_changed[list->size] = 2;
-                list->size++;
+                list->range[list->size] = -cut_place;
+                if (list->list[i] != list->list[list->size]) list->size++;
                 list->range[i] = list->range[i] + cut_place + 1;
             }
 
-            list->list[i] = new_value;
+            list->list[i] = list->list[i] - source + destination;
             list->has_changed[i] = 1;
         } else if (list->list[i] < source && list->list[i] + list->range[i] >= source) {
             // Check if some part is inside
@@ -147,6 +148,7 @@ seeds * check_seeds_2(char *line) {
     int set_range = 0;
     seeds * list = malloc(sizeof(seeds));
     memset(list, 0, sizeof(seeds));
+    list->size = 0;
 
     for (char * ptr = line; *ptr != '\0'; ptr++) {
         if (*ptr >= '0' && *ptr <= '9') {
