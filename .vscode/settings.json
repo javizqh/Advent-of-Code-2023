@@ -19,6 +19,9 @@
         "list": "c",
         "bitset": "c",
         "string_view": "c",
-        "initializer_list": "c"
+        "initializer_list": "c",
+        "algorithm": "c",
+        "compare": "c",
+        "*.txx": "c"
     }
 }
