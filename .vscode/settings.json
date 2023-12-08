@@ -22,6 +22,7 @@
         "initializer_list": "c",
         "algorithm": "c",
         "compare": "c",
-        "*.txx": "c"
+        "*.txx": "c",
+        "numeric": "c"
     }
 }
