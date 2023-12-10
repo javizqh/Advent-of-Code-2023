@@ -23,6 +23,8 @@
         "algorithm": "c",
         "compare": "c",
         "*.txx": "c",
-        "numeric": "c"
+        "numeric": "c",
+        "iterator": "c",
+        "map": "c"
     }
 }
