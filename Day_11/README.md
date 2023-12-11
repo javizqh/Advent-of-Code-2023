@@ -112,4 +112,4 @@ Now, instead of the expansion you did before, make each empty row or column one 
 
 Starting with the same initial image, expand the universe according to these new rules, then find the length of the shortest path between every pair of galaxies. What is the sum of these lengths?
 
-- Result: 1104
+- Result: 904633799472
